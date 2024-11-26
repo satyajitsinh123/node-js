@@ -1,6 +1,6 @@
 const http = require("http");
 const fs = require("fs");
-
+  
 const data = http.createServer((req, res) => {
   console.log("New Request Received");
   console.log(req);
