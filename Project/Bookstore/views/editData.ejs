@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* Global Styles */
+:root {
+    --primary-color: #28a745;
+    --primary-hover: #218838;
+    --background-color: #f9f9f9;
+    --form-bg-color: #ffffff;
+    --text-color: #333;
+    --border-color: #ddd;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --input-padding: 8px;
+    --button-padding: 10px 15px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Form Styles */
+form {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--form-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 40%;
+    box-sizing: border-box;
+}
+
+form table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+form table td {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+form input[type="text"],
+form select {
+    width: 100%;
+    padding: var(--input-padding);
+    margin: 5px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form input[type="radio"] {
+    margin-right: 5px;
+}
+
+form button {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    padding: var(--button-padding);
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    </style>
+</head>
+
+<body>
+    <form action="/updateData/<%= storeData.id %>" method="post">
+        <table>
+            <tr>
+                <td><label for="">Book Name :</label></td>
+                <td> <input type="text" placeholder="Enter Book Name" value="<%= storeData.bookname %>" name="bookname">
+                </td>
+            </tr>
+            <tr>
+                <td> <label for="">Price :</label></td>
+                <td><input type="text" placeholder="Enter Book Price" value="<%= storeData.price %>" name="price"></td>
+            </tr>
+            <tr>
+                <td><label for="">chapter : </label></td>
+                <td>
+                    <input type="radio" name="chapter-1" value="chapter-1" <%=storeData.semester === "Sem-1"
+                        ? "checked" : "" %> />chapter-1
+                    <input type="radio" name="chapter-2" value="chapter-2" <%=storeData.semester === "Sem-2"
+                        ? "checked" : "" %> />chapter-2
+                </td>
+            </tr>
+            <tr>
+                <td>Category</td>
+                <td>
+
+
+                    <label for="Category" style="margin-top: 15px;">Category:</label>
+                    <select name="Category" required>
+                        <option value="">Select Category</option>
+                        <option value="Bhagavad Gita" <%=storeData.Category==="BhagavadGita" ? "selected" : "" %>>Bhagavad Gita
+                        </option>
+                        <option value="Ramayana" <%=storeData.Category==="Ramayana" ? "selected" : "" %>>Ramayana</option>
+                        <option value="Saurashtra-ni Rasdhar" <%=storeData.Category==="Saurashtra-niRasdhar" ? "selected" : "" %>
+                            >Saurashtra-ni Rasdhar</option>
+                        <option value="Charaka Samhita" <%=storeData.Category==="Charaka Samhita" ? "selected" : "" %>>Charaka Samhita</option>
+                        <option value="Shourya Gatha" <%=storeData.Category==="Shourya Gatha" ? "selected" : "" %>>Shourya Gatha
+                        </option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td><button type="submit">Update Data</button></td>
+            </tr>
+        </table>
+    </form>
+</body>
+
+</html>
