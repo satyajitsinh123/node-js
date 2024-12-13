@@ -1,20 +1,78 @@
 const express = require("express");
-const userModel = require("../model/userModel");
+const UserModel = require("../model/userModel");
 
-const dashbordRouter = express.Router();
+const dashboardRouter = express.Router();
 
-dashbordRouter.get("/", (req, res) => {
-  res.render("dashbord");
+dashboardRouter.get("/", (req, res) => {
+  const cookieData = req.cookies["auth"];
+  if (cookieData) {
+    res.redirect("/dashboard");
+    return;
+  }
+  res.render("signIn");
 });
 
- dashbordRouter.get("/signUp",async(req,res)=>{
-  res.render("signUp");
+dashboardRouter.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
+dashboardRouter.post("/insertData", async (req, res) => {
+  console.log(req.body);
   try {
-    await userModel.create(req.body)
-    res.redirect("/signIn")
-  } catch (error) {
-    console.log(error);
-    
+    await UserModel.create(req.body);
+    console.log("User created");
+    res.redirect("/signIn");
+  } catch (err) {
+    console.log(err);
   }
- })
-module.exports = dashbordRouter
+});
+
+dashboardRouter.get("/dashboard", (req, res) => {
+  const cookieData = req.cookies["auth"];
+  console.log(cookieData);
+  if (!cookieData) {
+    res.redirect("/");
+  }
+  res.render("dashboard");
+});
+
+dashboardRouter.post("/login", async (req, res) => {
+  const { userName, password } = req.body;
+  console.log(userName);
+
+  const getUserData = await UserModel.findOne({ userName: userName });
+  if (getUserData) {
+    if (getUserData.password !== password) {
+      console.log("Invalid credentials");
+      res.redirect("/");
+      return;
+    }
+  } else {
+    console.log("User not found");
+    res.redirect("/");
+    return;
+  }
+  res.cookie("auth", getUserData);
+  res.redirect("/dashboard");
+
+  console.log(getUserData);
+});
+
+dashboardRouter.get("/viewAdmin", (req, res) => {
+  const cookieData = req.cookies["auth"];
+  if (cookieData) {
+    res.render("viewAdmin");
+    return;
+  }
+  res.render("signIn");
+});
+
+dashboardRouter.get("/changePassword", (req, res) => {
+  res.render("changePassword");
+});
+
+dashboardRouter.get("/logout", (req, res) => {
+  res.clearCookie("auth");
+  res.redirect("/");
+});
+module.exports = dashboardRouter;
