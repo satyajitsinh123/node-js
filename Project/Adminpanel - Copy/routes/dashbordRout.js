@@ -2,6 +2,7 @@ const express = require("express");
 const UserModel = require("../model/UserModel");
 const passport = require("../config/passport-local");
 var nodemailer = require("nodemailer");
+const CategoryModel = require("../model/CategoryModel");
 const dashboardRouter = express.Router();
 
 dashboardRouter.get("/", (req, res) => {
@@ -122,7 +123,33 @@ dashboardRouter.get("/otpPage", (req, res) => {
 
 dashboardRouter.post("/checkOtp", (req, res) => {
   const cookieOtp = req.cookies["getOtp"];
-  // console.log(cookieOtp);
-  // console.log(req.body);
+  if (cookieOtp == req.body.otp) {
+    redirect("/changeOtp");
+  }
 });
+
+dashboardRouter.get("/addCategory", (res, req) => {
+  res.render("addCategory");
+});
+
+dashboardRouter.post("/insertCategoory", async (req, res) => {
+  try {
+    console.log(req.body);
+    await CategoryModel.create(req.body);
+    console.log("category Created");
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+dashboardRouter.get("/viewCategory", async (req, res) => {
+  try {
+    const categories = await CategoryModel.find({});
+    res.render("viewCategory", { categories });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = dashboardRouter;

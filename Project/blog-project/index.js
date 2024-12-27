@@ -1,15 +1,20 @@
-const { error } = require("console");
 const express = require("express");
-
+const dashbordRouter = require("./routes/dashbordRout");
+const path = require("path");
+const connection = require("./config/db");
 const app = express();
 
 app.set("view engine", "ejs");
+app.use(express.urlencoded({}));
+app.use("/assets", express.static(path.join(__dirname, "/assets")));
 
-app.listen(1230, (error) => {
+app.use("/", dashbordRouter);
+
+app.listen(2322, (error) => {
   if (error) {
-    console.log("Error starting the server");
+    console.log(`server starting the server`);
     return;
   }
-
-  console.log("Server is running on port 1112");
+  connection();
+  console.log("server is runing on port 2322");
 });
